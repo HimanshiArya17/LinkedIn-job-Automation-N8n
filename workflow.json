@@ -1,0 +1,1584 @@
+{
+  "name": "Linkedln job automation",
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1gczkL7yVibtWZOgsW7rsa5fZueIUcN6ZNwDhmaKyY9A",
+          "mode": "list",
+          "cachedResultName": "Company data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1gczkL7yVibtWZOgsW7rsa5fZueIUcN6ZNwDhmaKyY9A/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1gczkL7yVibtWZOgsW7rsa5fZueIUcN6ZNwDhmaKyY9A/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "COMPANY NAME": "={{ $('job scaper').item.json.companyName }}",
+            "LINK": "={{ $('job scaper').item.json.companyLinkedinUrl }}",
+            "TITLE": "={{ $('job scaper').item.json.title }}",
+            "LOCATION": "={{ $('job scaper').item.json.location }}",
+            "SALARY": "={{ $('job scaper').item.json.salaryInfo[0] }}",
+            "BENEFITS": "={{ $('job scaper').item.json.benefits }}",
+            "DESCRIPTION": "={{ $('job scaper').item.json.descriptionText }}",
+            "END VIEW": "={{ $json.output }}",
+            "REVIEW ": "={{ $('Reddit review').item.json.data.children[1].data.selftext }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "COMPANY NAME",
+              "displayName": "COMPANY NAME",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "LINK",
+              "displayName": "LINK",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "TITLE",
+              "displayName": "TITLE",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "LOCATION",
+              "displayName": "LOCATION",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "SALARY",
+              "displayName": "SALARY",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "BENEFITS",
+              "displayName": "BENEFITS",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "DESCRIPTION",
+              "displayName": "DESCRIPTION",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "REVIEW ",
+              "displayName": "REVIEW ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "END VIEW",
+              "displayName": "END VIEW",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        672,
+        -224
+      ],
+      "id": "cf250c33-3e79-4341-8254-ed4920a1f81c",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "lF4XNBpX79H6rjGo",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "3219738b-c3d9-439d-a20b-81318f05bc7a",
+              "leftValue": "={{ $json.companyLinkedinUrl }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        -32,
+        -224
+      ],
+      "id": "cbe6f72d-bbe4-4692-a64f-f25e44189f78",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        336,
+        -64
+      ],
+      "id": "3e06365e-5217-43df-b53a-f7e4f1cc3287",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "C7GrTP6tsLe1VZme",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "c1244221-9b6b-4b55-844d-d5f9b55932d3",
+              "leftValue": "={{ $json[\"END VIEW\"] }}",
+              "rightValue": "Negative",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        832,
+        -224
+      ],
+      "id": "4b9a2c61-85da-4379-a069-1017baa68fd5",
+      "name": "Filter1"
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "1yCTLVpRXBjnWvZesCzGUdeNTcQ6KwWvt",
+          "mode": "list",
+          "cachedResultName": "Dublin-Resume-Template-Modern.pdf",
+          "cachedResultUrl": "https://drive.google.com/file/d/1yCTLVpRXBjnWvZesCzGUdeNTcQ6KwWvt/view?usp=drivesdk"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -192,
+        80
+      ],
+      "id": "356245c4-2eb3-43ef-9197-5a8a59b438e9",
+      "name": "Download file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "VCUgP0UrnU1C7iGZ",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "pdf",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        368,
+        80
+      ],
+      "id": "b3530bee-bc48-413e-9bb7-4ad3ea922604",
+      "name": "Extract from File"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        1200,
+        -112
+      ],
+      "id": "547773ec-30b7-4f05-a04f-5c2e1723c9d9",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4cff9daf-ef68-4d20-af75-0c799d3e3e03",
+              "name": "Company name",
+              "value": "={{ $('Append row in sheet').item.json['COMPANY NAME'] }}",
+              "type": "string"
+            },
+            {
+              "id": "657f1a0a-4713-4db5-8cec-e404538c0771",
+              "name": "Description",
+              "value": "={{ $json.DESCRIPTION }}",
+              "type": "string"
+            },
+            {
+              "id": "7fab676c-6bdb-4023-9498-3eca71f97bcf",
+              "name": "Title",
+              "value": "={{ $json.TITLE }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        976,
+        -224
+      ],
+      "id": "21c72ba1-5802-4a72-965c-45d95c95593a",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "87796568-3e47-41e4-9cc8-2e631637bd98",
+              "name": "Resume text",
+              "value": "={{ $json.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        656,
+        80
+      ],
+      "id": "fd73c868-4e3f-4ecc-b255-f261fdd5d2f5",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        1376,
+        96
+      ],
+      "id": "c4a7262c-545c-4381-88ae-ae0588732b85",
+      "name": "Google Gemini Chat Model1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "C7GrTP6tsLe1VZme",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "maxItems": 10
+      },
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        112,
+        -224
+      ],
+      "id": "7851f5bd-e255-4b25-a326-6f096933ba7f",
+      "name": "Limit1"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        1648,
+        112
+      ],
+      "id": "f09a5c0d-11de-4749-a428-3d1a8a65606f",
+      "name": "Google Gemini Chat Model2",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "C7GrTP6tsLe1VZme",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"complete_resume_text\": \"text_of_the_entire_formatted_resume\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        1824,
+        96
+      ],
+      "id": "39db530c-6d55-4d12-9556-d6e091ee7914",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "folderId": "1o0RQ8vkuj8ssundGWFklKsraQW7lRtUg",
+        "title": "Resumeee"
+      },
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [
+        2160,
+        -112
+      ],
+      "id": "c9a77046-0c5b-42d2-86a4-7649c734175b",
+      "name": "Create a document",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "LrAEauD3WVtS7d51",
+          "name": "Google Docs account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// 1. Change 'output' to the correct input variable, which is now accessing the nested 'output' key\nlet rawText = $json.output.complete_resume_text; \n\n// 2. Safely handle if the text is null or undefined before replacing\nif (rawText) {\n    // 3. This converts the escaped sequence '\\n' into a true newline character.\n    let cleanText = rawText.replace(/\\\\n/g, '\\n')\n                           .replace(/\\\\\"/g, '\"'); // Also clean up escaped quotes\n\n    // 4. Output the clean string to the next node\n    return {\n      \"text_to_insert\": cleanText\n    };\n} else {\n    // If the data is missing, return an empty object or a message\n    return {\n      \"text_to_insert\": \"\"\n    };\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2000,
+        -112
+      ],
+      "id": "e123747e-a594-4883-902d-96e4cf4abe7d",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Write an email applying for the {{ $('HUNTER').item.json.data.emails[0].position }} at {{ $json.LINKEDIN }}. Mention that my attached CV details my experience in building agentic AI workflows and complex automation solutions.",
+        "options": {
+          "systemMessage": "You are a professional, enthusiastic applicant. Your task is to write a cover email for a job application. The tone should be engaging, professional, and highlight key skills relevant to the job title. Keep it under 200 words."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        2752,
+        208
+      ],
+      "id": "6bb7fd8e-cd19-499d-914d-e793fdf766aa",
+      "name": "AI Agent3"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        2768,
+        464
+      ],
+      "id": "72607167-d443-4920-907c-190a586c79db",
+      "name": "Google Gemini Chat Model3",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "C7GrTP6tsLe1VZme",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        2544,
+        -112
+      ],
+      "id": "7b7f8ace-6826-453a-91fc-01090861476d",
+      "name": "Download file1",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "VCUgP0UrnU1C7iGZ",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.apify.com/v2/acts/curious_coder~linkedin-jobs-scraper/run-sync-get-dataset-items?token=yourtoken",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n    \"count\": 100,\n    \"scrapeCompany\": true,\n    \"urls\": [\n        \"https://www.linkedin.com/jobs/search/?position=1&pageNum=0\"\n    ]\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -192,
+        -224
+      ],
+      "id": "755a4f77-1370-4a99-b036-d63264157210",
+      "name": "job scaper"
+    },
+    {
+      "parameters": {
+        "url": "=https://www.reddit.com/search.json?q={{$json[\"companyName\"]}}&limit=3",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        256,
+        -224
+      ],
+      "id": "6fc00126-a078-4117-acf0-28a4d663ba90",
+      "name": "Reddit review"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "Like the title says, not sure if this is the case for anyone else but literally all the jobs on there are posted by TCS, Wipro...",
+        "options": {
+          "systemMessage": "You are an AI that analyzes Reddit company reviews and classifies sentiment as Positive, Neutral, or Negative.\nOutput one of these words only: Positive, Neutral, or Negative."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        400,
+        -224
+      ],
+      "id": "51f31eab-64a4-4fc5-bd93-ea1b34bd6b9f",
+      "name": "analyzes reddit"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Company Name: {{ $json[\"Company name\"] }}\nDescription: {{ $json.Description }}\nReview: {{ $('Reddit review').item.json.data.children[0].data.selftext }}\nResume Text:{{ $json[\"Resume text\"] }}",
+        "options": {
+          "systemMessage": "You are an AI that helps job applicants improve their resumes based on company reviews and sentiment.\nAnalyze the given company's sentiment and review, and then suggest personalized improvements to the resume text so that it aligns better with what this company might value.\nGive your response in this format:\n\n1. Company Overview Summary\n2. Sentiment Interpretation (Positive / Neutral)\n3. Suggested Resume Improvements\n4. Final Resume Section (if applicable)"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        1376,
+        -112
+      ],
+      "id": "6349f3ad-680a-40ac-831b-6b72c1cd64e7",
+      "name": "resume improver"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=summary :{{ $json.output }}\ncompany discription:{{ $('Merge').item.json.Description }}\nresume :{{ $('Merge').item.json[\"Resume text\"] }}\ntitle:{{ $('Merge').item.json.Title }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=You are an expert at rewriting resumes based on Job Descriptions. You will be provided with the candidate's skills, job description, and candidate resume. You should prepare a resume for the candidate that is optimized for the particular job description.\n\n*IMPORTANT INSTRUCTIONS:*\n\nThe resume you prepare will be sent directly to client. So do not add any notes and or sections which require information to be updated by the candidate\n\n*Job Description:*\n{{ $('Merge').item.json.Description }}\n\n*Candidate Resume:*\n{{ $('Merge').item.json[\"Resume text\"] }}\n\nThe resume will be added to Google Docs, so provide the output in Markdown format. Put the markdown resume content in a JSON item called \"resume\".\n\nReturn only the clean, professional resume without any AI-generated filler text, placeholder sections, or explanatory notes."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        1648,
+        -112
+      ],
+      "id": "4ea6ea0e-7a41-4a3b-8378-d3653935d8c0",
+      "name": "new resume creater"
+    },
+    {
+      "parameters": {
+        "method": "PATCH",
+        "url": "=https://www.googleapis.com/upload/drive/v3/files/{{ $json.id }}?uploadType=media",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "googleDocsOAuth2Api",
+        "sendHeaders": true,
+        "specifyHeaders": "json",
+        "jsonHeaders": "={\n  \"Content-Type\":\"text/html\"\n}",
+        "sendBody": true,
+        "contentType": "raw",
+        "body": "={{ $('Code').item.json.text_to_insert }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2336,
+        -112
+      ],
+      "id": "f9205541-6b49-46bd-83e5-34bc05540013",
+      "name": "docs resume created",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "LrAEauD3WVtS7d51",
+          "name": "Google Docs account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1Aqm1k-MjbBoQKxZHMFC6mCTo4rIpv-VAyLgiqDYYGg4",
+          "mode": "list",
+          "cachedResultName": "Apply automatically",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Aqm1k-MjbBoQKxZHMFC6mCTo4rIpv-VAyLgiqDYYGg4/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Aqm1k-MjbBoQKxZHMFC6mCTo4rIpv-VAyLgiqDYYGg4/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "FIRST NAME": "={{ $json.data.emails[0].first_name }}",
+            "LAST NAME": "={{ $json.data.emails[0].last_name }}",
+            "CONFIDENCE": "={{ $json.data.emails[0].confidence }}",
+            "LINKEDIN": "={{ $json.data.emails[0].value }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "FIRST NAME",
+              "displayName": "FIRST NAME",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "LAST NAME",
+              "displayName": "LAST NAME",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "CONFIDENCE",
+              "displayName": "CONFIDENCE",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "LINKEDIN",
+              "displayName": "LINKEDIN",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        2528,
+        208
+      ],
+      "id": "464ba099-cf5e-4c68-a0a1-12fb3f98ec90",
+      "name": "Append row in sheet1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "lF4XNBpX79H6rjGo",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        1616,
+        736
+      ],
+      "id": "a45e9158-98dd-4da7-ae16-532f8d7d2826",
+      "name": "Google Gemini Chat Model4",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "C7GrTP6tsLe1VZme",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "e49e2ee9-ed1e-4c20-be9d-11b559dfe315",
+              "leftValue": "={{ $json.data.emails[0].value }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2272,
+        224
+      ],
+      "id": "a1b27266-10ad-4f75-bb02-db7bc50c5102",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get the raw text output from the previous AI Agent node\n// Assuming the AI's output is stored in the 'output' or 'text' property of the first item\nconst rawText = $json.output || $json.text; \n\n// --- 1. Extract the Subject ---\n// Split the text at \"Subject:\" and take the second part (the content after \"Subject:\")\nlet subjectLine = rawText.split('Subject:')[1]; \n\n// Then, split that content by the newline character ('\\n') and take the first line, then trim whitespace.\nsubjectLine = subjectLine ? subjectLine.split('\\n')[0].trim() : \"Default Application Subject\";\n\n// --- 2. Extract the Body ---\n// Find the index of the first newline character ('\\n'), which separates the subject line from the body.\nconst firstNewlineIndex = rawText.indexOf('\\n'); \n\n// Get all the text starting one character after the first newline.\nlet emailBody = rawText.substring(firstNewlineIndex + 1).trim();\n\n// Create a new item with the separated data\nreturn [{ \n    json: {\n        email_subject: subjectLine,\n        email_body: emailBody\n    } \n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3056,
+        208
+      ],
+      "id": "5e49b05b-2d18-4189-9394-e66857c7357c",
+      "name": "Code1"
+    },
+    {
+      "parameters": {
+        "sendTo": "himanshiarya172005@gmail.com",
+        "subject": "={{ $json.email_subject }}",
+        "emailType": "text",
+        "message": "={{ $json.email_body }}",
+        "options": {
+          "appendAttribution": false,
+          "attachmentsUi": {
+            "attachmentsBinary": [
+              {
+                "property": "=data"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        3456,
+        112
+      ],
+      "id": "6d6e80df-2768-4742-9faa-6215adf50b83",
+      "name": "Send a message1",
+      "webhookId": "52a032ce-6683-4f67-8bb1-5b68b0103d9e",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "1Fs6w9fXTm9FCH2d",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        3248,
+        112
+      ],
+      "id": "42fab4ee-289e-4752-b6ed-10ec1edee4a9",
+      "name": "Merge2"
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyHour"
+            }
+          ]
+        },
+        "filters": {}
+      },
+      "type": "n8n-nodes-base.gmailTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        880,
+        768
+      ],
+      "id": "1e31c43b-86b3-47b6-ae0f-242d43bfbfd3",
+      "name": "Gmail Trigger",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "1Fs6w9fXTm9FCH2d",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "df384fb7-1395-443d-8fda-9dc447b5d432",
+              "leftValue": "={{ $json.Subject }}",
+              "rightValue": "Interview",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1104,
+        768
+      ],
+      "id": "b43c9b6d-3d9c-4a9b-8f19-d6c1bc58d6d8",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "himanshiarya172005@gmail.com",
+          "mode": "list",
+          "cachedResultName": "himanshiarya172005@gmail.com"
+        },
+        "start": "={{ $json.output.start_time }}",
+        "end": "={{ $json.output.end_time }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.3,
+      "position": [
+        1888,
+        912
+      ],
+      "id": "7c2590aa-ebca-4f15-bf24-4e90b97568ef",
+      "name": "Create an event",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "itANn2NShAREt7fr",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "himanshiarya172005@gmail.com",
+        "subject": "Regarding job interview",
+        "emailType": "text",
+        "message": "={{ $json.output }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1888,
+        624
+      ],
+      "id": "a498b3ff-6b70-4289-81af-dba125f760aa",
+      "name": "Send a message",
+      "webhookId": "7bcede65-1542-4170-9153-b486f62dfeb6",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "1Fs6w9fXTm9FCH2d",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        1536,
+        1136
+      ],
+      "id": "e89d182d-b982-49f3-8614-351561cfb0c1",
+      "name": "Google Gemini Chat Model5",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "C7GrTP6tsLe1VZme",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"title\": \"Interview for [Job Title] at [Company Name]\",\n  \"start_time\": \"YYYY-MM-DDTHH:MM:SSZ\",\n  \"end_time\": \"YYYY-MM-DDTHH:MM:SSZ\",\n  \"timezone\": \"IST\"\n}\n\n"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        1712,
+        1136
+      ],
+      "id": "24f50345-9868-4128-b0ee-9278b1c57b7e",
+      "name": "Structured Output Parser1"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "messageId": "={{ $json.id }}",
+        "simple": false,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1216,
+        752
+      ],
+      "id": "4056539e-2866-4a5d-be33-aeae22fed45d",
+      "name": "Get a message",
+      "webhookId": "6661f06b-d4c8-418e-b88a-a6dd12184c49",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "1Fs6w9fXTm9FCH2d",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Analyze the following email content and generate the full interview preparation email:\n{{ $('Gmail Trigger').item.json.snippet }}\n",
+        "options": {
+          "systemMessage": "You are an expert Interview Preparation Agent and HR Analyst. Your task is to analyze the incoming interview invitation email, research the company, and provide structured preparation materials.\n\n1.  *Identify:* Extract the exact *Company Name* and *Job Title* from the email.\n2.  *Research & Summarize:* Use your web access/tools to find the company's recent mission, major products, and 1-2 pieces of recent relevant news.\n3.  *Generate:* Create a list of 5-7 customized, high-probability interview questions for the specified Job Title.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        1536,
+        512
+      ],
+      "id": "aad33e41-c80f-4f20-9d0e-7f7ab9554901",
+      "name": "to send email"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Text to analyze:\n{{ $json.html }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "You are a specialized data extraction tool. Your only goal is to analyze the provided text and output the interview event details in a strict JSON format.\nIf any data is missing (e.g., the time zone is not specified), use a default guess (e.g., IST for the time zone).\nThe interview duration is typically 45 minutes; set the 'end_time' 45 minutes after the 'start_time' if the duration is not specified."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        1536,
+        912
+      ],
+      "id": "505e8d5b-cfab-4d14-bc7c-c46d6ea5ac1b",
+      "name": "to set calender event"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.hunter.io/v2/domain-search?domain={{ $('Append row in sheet').item.json.LINK }}&api_key=ef55ef2c890c634723a78f385137337b70345d15&department=hr",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2064,
+        224
+      ],
+      "id": "a2ea6d54-c990-490d-8e0e-0c27bd447daf",
+      "name": "HUNTER"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "cb464dfa-76cf-4658-a98c-8a22455be79e",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -224,
+        1056
+      ],
+      "id": "4c598edd-3088-4062-a805-eab75e5a622b",
+      "name": "Webhook",
+      "webhookId": "cb464dfa-76cf-4658-a98c-8a22455be79e"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -560,
+        -16
+      ],
+      "id": "6df117f9-34a3-42ee-8136-b3e25491845b",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Extract base64 and remove prefix if present\nconst fileBase64 = $json[\"body\"][\"resumeFile\"][\"data\"].replace(/^data:application\\/pdf;base64,/, \"\");\n\n// Convert to binary\nreturn [\n  {\n    binary: {\n      data: {\n        data: Buffer.from(fileBase64, \"base64\"),\n        mimeType: \"application/pdf\",\n        fileName: $json[\"body\"][\"resumeFile\"][\"name\"] || \"resume.pdf\"\n      }\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -16,
+        1056
+      ],
+      "id": "f95761dc-a9db-476e-aeee-9d36177b3760",
+      "name": "Code2"
+    },
+    {
+      "parameters": {
+        "name": "resumefromweb",
+        "driveId": {
+          "__rl": true,
+          "value": "My Drive",
+          "mode": "list",
+          "cachedResultName": "My Drive",
+          "cachedResultUrl": "https://drive.google.com/drive/my-drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "1o0RQ8vkuj8ssundGWFklKsraQW7lRtUg",
+          "mode": "list",
+          "cachedResultName": "N8N",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1o0RQ8vkuj8ssundGWFklKsraQW7lRtUg"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        192,
+        1056
+      ],
+      "id": "01fed5d3-6863-45ea-92f8-4e900ef34085",
+      "name": "Upload file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "VCUgP0UrnU1C7iGZ",
+          "name": "Google Drive account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Filter1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Limit1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "analyzes reddit",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download file": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "resume improver",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "resume improver",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit1": {
+      "main": [
+        [
+          {
+            "node": "Reddit review",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "new resume creater",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "new resume creater",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a document": {
+      "main": [
+        [
+          {
+            "node": "docs resume created",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Create a document",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent3",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "job scaper": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reddit review": {
+      "main": [
+        [
+          {
+            "node": "analyzes reddit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "analyzes reddit": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "resume improver": {
+      "main": [
+        [
+          {
+            "node": "new resume creater",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "new resume creater": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "docs resume created": {
+      "main": [
+        [
+          {
+            "node": "Download file1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download file1": {
+      "main": [
+        [
+          {
+            "node": "HUNTER",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet1": {
+      "main": [
+        [
+          {
+            "node": "AI Agent3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model4": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "to send email",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent3": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code1": {
+      "main": [
+        [
+          {
+            "node": "Merge2",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge2": {
+      "main": [
+        [
+          {
+            "node": "Send a message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail Trigger": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "to send email",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get a message",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Google Gemini Chat Model5": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "to set calender event",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser1": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "to set calender event",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a message": {
+      "main": [
+        [
+          {
+            "node": "to set calender event",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "to send email": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "to set calender event": {
+      "main": [
+        [
+          {
+            "node": "Create an event",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HUNTER": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Code2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "job scaper",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Download file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code2": {
+      "main": [
+        [
+          {
+            "node": "Upload file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload file": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "ca10ff9a-ff01-41df-ad8e-eb7a5afff4ef",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "44e844f1196c8398f7473894154c1f82fe74fe9794c46ec8ea584ac0517fe96f"
+  },
+  "id": "LHjQWusoz2oDp4fk",
+  "tags": []
+}
